@@ -1,4 +1,4 @@
-FROM node:21 as builder
+FROM node:21-apline as builder
 WORKDIR /app
 COPY package.json .
 RUN npm install
