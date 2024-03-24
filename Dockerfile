@@ -1,8 +1,8 @@
 FROM node:21-alpine as builder
 WORKDIR /app
-COPY package.json .
-RUN npm install --omit=dev
 COPY . .
+RUN ls
+RUN npm install --omit=dev
 RUN npm run build
 
 
