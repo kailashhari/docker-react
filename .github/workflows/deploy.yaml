@@ -8,11 +8,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build -t kailash1501/react-test -f Dockerfile.dev .
       - run: docker run -e CI=true kailash1501/react-test npm test
-  
+      - run: npm ci
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
   
