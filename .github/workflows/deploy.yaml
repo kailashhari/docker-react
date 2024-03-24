@@ -9,24 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build -t kailash1501/react-test -f Dockerfile.dev .
       - run: docker run -e CI=true kailash1501/react-test npm test
-      - run: npm ci
-      - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*'
-  
-      - name: Deploy to EB
-        uses: einaregilsson/beanstalk-deploy@v21
+      - name: SSH into oracle vm and run docker compose
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-          application_name: frontend
-          environment_name: Frontend-env
-          existing_bucket_name: elasticbeanstalk-ap-southeast-2-992382431808
-          region: ap-southeast-2
-          version_label: ${{ github.sha }}
-          deployment_package: deploy.zip
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USERNAME }}
+          key: ${{ secrets.VM_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            echo Hello World

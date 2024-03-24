@@ -2,9 +2,8 @@ FROM node:21-alpine as builder
 WORKDIR /app
 COPY . .
 RUN ls
-RUN npm install --omit=dev
+RUN npm install
 RUN npm run build
-
 
 FROM nginx
 EXPOSE 80
