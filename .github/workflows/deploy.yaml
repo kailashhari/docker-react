@@ -13,6 +13,7 @@ jobs:
       - run: docker build -t kailash1501/react-test -f Dockerfile.dev .
       - run: docker run -e CI=true kailash1501/react-test npm test
   Deploy-To-Prod:
+    needs: [Npm-Test]
     runs-on: ubuntu-latest
     steps:
       - name: SSH into gcloud vm and run docker compose
@@ -24,5 +25,8 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /usr/apps/docker-react/
+            docker compose down
+            docker system prune -f
             sudo git pull
-            docker compose up --build
+            docker compose up --build -d
+            docker compose ps

@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Hello hello World, increased tier of vm!!
+          Workflow works!!
         </p>
         <a
           className="App-link"
