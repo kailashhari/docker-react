@@ -5,14 +5,17 @@ on:
       - master # check your repo, your default branch might be master!
   
 jobs:
-  build:
+  Npm-Test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build -t kailash1501/react-test -f Dockerfile.dev .
       - run: docker run -e CI=true kailash1501/react-test npm test
-      - name: SSH into oracle vm and run docker compose
+  Deploy-To-Prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH into gcloud vm and run docker compose
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VM_HOST }}
@@ -20,4 +23,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            whoami
+            cd /usr/apps/docker-react/
+            sudo git pull
+            docker compose up --build
