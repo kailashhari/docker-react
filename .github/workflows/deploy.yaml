@@ -20,5 +20,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            echo Hello World
-            pwd
+            whoami
