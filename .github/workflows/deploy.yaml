@@ -26,7 +26,6 @@ jobs:
           script: |
             cd /home/ubuntu/apps/docker-react/
             docker compose down
-            docker system prune -f
             sudo git pull
             docker compose up --build -d
             docker compose ps
